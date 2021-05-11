@@ -1,4 +1,5 @@
 ﻿using LT.Microservices.Day2.Models;
+using LT.Microservices.Day2.Services;
 using LT.Microservices.Day2.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,31 +14,41 @@ namespace LT.Microservices.Day2.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
+        private readonly IBookService _service;
+
+        public BooksController(IBookService service)
+        {
+            _service = service;
+        }
+
+
         //  GET
         //  Get All
         [HttpGet]
         public ActionResult<IEnumerable<BookListViewModel>> Get()
         {
-            return Ok(new List<BookListViewModel>());
+            return Ok(_service.Get());
         }
 
         [HttpGet("{id}")]
         public ActionResult<BookListViewModel> Get(int id)
         {
-            return Ok(new BookListViewModel { Id = id, NPages = 285, Price = 100, Title = "C# Programming" });
+            return Ok(_service.Get(id));
         }
 
         //  POST
         [HttpPost]
         public IActionResult Create(BookCreateViewModel viewModel)
         {
-            return Created($"http://localhost:5000/api/books/145", viewModel);
+            _service.Create(viewModel);
+            return Ok();
         }
 
         //  PUT
         [HttpPut]
         public IActionResult Update(BookUpdateViewModel viewModel)
         {
+            _service.Update(viewModel);
             return Ok();
         }
 
@@ -46,6 +57,7 @@ namespace LT.Microservices.Day2.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            _service.Delete(id);
             return Ok();
         }
     }
