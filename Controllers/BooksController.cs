@@ -1,4 +1,5 @@
 ﻿using LT.Microservices.Day2.Models;
+using LT.Microservices.Day2.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,27 +16,27 @@ namespace LT.Microservices.Day2.Controllers
         //  GET
         //  Get All
         [HttpGet]
-        public ActionResult<IEnumerable<Book>> Get()
+        public ActionResult<IEnumerable<BookListViewModel>> Get()
         {
-            return Ok(new List<Book>());
+            return Ok(new List<BookListViewModel>());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Book> Get(int id)
+        public ActionResult<BookListViewModel> Get(int id)
         {
-            return Ok(new Book { Id = id, NPages = 285, Price = 100, Title = "C# Programming" });
+            return Ok(new BookListViewModel { Id = id, NPages = 285, Price = 100, Title = "C# Programming" });
         }
 
         //  POST
         [HttpPost]
-        public IActionResult Create(Book book)
+        public IActionResult Create(BookCreateViewModel viewModel)
         {
-            return Created($"http://localhost:5000/api/books/{book.Id}", book);
+            return Created($"http://localhost:5000/api/books/145", viewModel);
         }
 
         //  PUT
         [HttpPut]
-        public IActionResult Update(Book book)
+        public IActionResult Update(BookUpdateViewModel viewModel)
         {
             return Ok();
         }
